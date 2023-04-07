@@ -71,26 +71,22 @@ def page_not_found(error):
 
 @app.route('/api/v1/movies', methods=['POST'])
 def movies():
-
-    form = MovieForm()
-
+    form = MovieForm(request.form)
     if form.validate():
-
-        movie = Movie(title=form.title.data, description=form.description.data)
+        title = form.title.data
+        description = form.description.data
+        poster = form.poster.data
+        filename = secure_filename(poster.filename)
+        poster.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        movie = Movie(title=title, description=description, poster=filename)
         db.session.add(movie)
         db.session.commit()
-
-        if form.poster.data:
-            filename = secure_filename(form.poster.data.filename)
-            form.poster.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            movie.poster = filename
-            db.session.commit()
-
         return jsonify({
-            'message': 'Movie Successfully added',
+            'message': 'Movie successfully added',
             'title': movie.title,
             'poster': movie.poster,
             'description': movie.description
         })
-
-    return jsonify({'errors': form_errors(form)}), 400
+    else:
+        errors = form_errors(form)
+        return jsonify({'errors': errors})
