@@ -73,15 +73,21 @@ def page_not_found(error):
 @app.route('/api/v1/movies', methods=['POST'])
 def movies():
     form = MovieForm(request.form)
+
     if form.validate():
+
         title = form.title.data
         description = form.description.data
+        
         poster = form.poster.data
         filename = secure_filename(poster.filename)
+
         poster.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         movie = Movie(title=title, description=description, poster=filename)
+        
         db.session.add(movie)
         db.session.commit()
+        
         return jsonify({
             'message': 'Movie successfully added',
             'title': movie.title,
