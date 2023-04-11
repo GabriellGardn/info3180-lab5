@@ -4,7 +4,7 @@
     <form @submit.prevent="saveMovie" id="movieForm">
       <div class="form-group mb-3">
         <label for="title" class="form-label">Movie Title</label>
-        <input type="text" name="title" v-model="title" class="form-control" />
+        <input type="text" name="title" class="form-control" />
       </div>
       <div class="form-group mb-3">
         <label for="poster" class="form-label">Movie Poster</label>
@@ -12,7 +12,7 @@
       </div>
       <div class="form-group mb-3">
         <label for="description" class="form-label">Movie Description</label>
-        <textarea name="description" v-model="description" class="form-control"></textarea>
+        <textarea name="description" class="form-control"></textarea>
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
