@@ -4,7 +4,7 @@
     <form @submit.prevent="saveMovie" id="movieForm">
       <div class="form-group mb-3">
         <label for="title" class="form-label">Movie Title</label>
-        <input type="text" name="title" class="form-control" />
+        <input type="text" name="title" v-model="title" class="form-control" />
       </div>
       <div class="form-group mb-3">
         <label for="poster" class="form-label">Movie Poster</label>
@@ -12,7 +12,7 @@
       </div>
       <div class="form-group mb-3">
         <label for="description" class="form-label">Movie Description</label>
-        <textarea name="description" class="form-control"></textarea>
+        <textarea name="description" v-model="description" class="form-control"></textarea>
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
@@ -35,7 +35,7 @@ function getCsrfToken() {
       console.log(data);
 
       csrf_token.value = data.csrf_token;
-    })
+    });
 }
 
 const title = ref('');
@@ -53,10 +53,14 @@ function saveMovie() {
     body: form_data,
     headers: {
       'X-CSRFToken': csrf_token.value
-  }
+  },
   })
     .then(function (response) {
-      return response.json();
+      if (response.ok) {
+        console.log("Movie saved successfully!");
+      } else {
+        console.log("Error saving movie");
+      }
   })
     .catch(function (error) {
       console.log(error);

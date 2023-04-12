@@ -14,11 +14,21 @@ class Movie(db.Model):
 
 
 
-
-
     def __init__(self, title, description, poster, created_at):
         self.title = title
         self.description = description
         self.poster = poster
         self.created_at = created_at
+
+
+    def serialize(self):
+        return {
+            "title": self.title,
+            "description": self.description,
+            "poster": self.poster,
+            "created_at": self.created_at
+        }
+
+    def __repr__(self):
+        return "<Movie %r>" % self.title
 
